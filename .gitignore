@@ -1,0 +1,30 @@
+# Node.js dependencies
+node_modules/
+dist/
+package-lock.json
+
+# Secrets
+.env
+
+# Compiled output (if any)
+/dist/
+/build/
+/out/
+/lib/
+/bin/
+
+# Editor and IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Log files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Mac
+.DS_Store
