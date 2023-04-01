@@ -23,6 +23,9 @@
     "build": "webpack --config webpack.config.js",
     "start": "webpack serve --config webpack.config.js --open"
   },
+  "dependencies": {
+    "satellite.js": "^4.0.3"
+  },
   "devDependencies": {
     "cesium": "^1.97.0",
     "copy-webpack-plugin": "^9.0.1",
