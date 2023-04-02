@@ -5,7 +5,7 @@ services:
     build: .
     container_name: sat-tracker
     ports:
-      - "8080:80"
+      - "1122:80"
     depends_on:
       - proxy
     volumes:

@@ -53,7 +53,7 @@ module.exports = {
     devtool: 'eval',
     devServer: {
         host: '0.0.0.0',
-        port: 8080,
+        port: 1122,
         hot: true,
         client: {
         allowedHosts: 'all',

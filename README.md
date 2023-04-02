@@ -24,4 +24,4 @@ Run the container:
 docker compose up -d
 ```
 
-The app will be running on port `8080`.
+The app will be running on port `1122`.
