@@ -6,8 +6,9 @@ Register for free and create an [N2YO API Token](https://www.n2yo.com/login/).
 
 Register for free and create a [Cesium Ion API Token](https://ion.cesium.com/).
 
-Create a `.env` in the root directory and add your API tokens, replacing `n2yo-token` and cesium-token` with the relevant value:
+Create a `.env` in the root directory and add your API tokens, replacing `n2yo-token` and cesium-token` with the relevant value, and `localhost` with your server IP or domain if not running locally:
 ```
+API_BASE_URL=http://localhost:4002
 N2YO_API_KEY=n2yo-token
 CESIUM_ION_ACCESS_TOKEN=cesium-token
 ```
