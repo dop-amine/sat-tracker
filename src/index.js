@@ -5,7 +5,7 @@ const axios = require("axios");
 const satellite = require("satellite.js");
 
 // N2YO API endpoint for TLE data
-const n2yoBaseUrl = 'http://localhost:4002/api';
+const apiBaseUrl = process.env.API_BASE_URL;
 const n2yoApiKey = process.env.N2YO_API_KEY;
 Cesium.Ion.defaultAccessToken = process.env.CESIUM_ION_ACCESS_TOKEN;
 
@@ -55,7 +55,7 @@ async function updateTLEData() {
     const noradIDs = [25544, 36516, 33591, 29155, 25338];
 
     for (const noradID of noradIDs) {
-      const response = await axios.get(`${n2yoBaseUrl}/tle/${noradID}?apiKey=${n2yoApiKey}`);
+      const response = await axios.get(`${apiBaseUrl}/api/tle/${noradID}?apiKey=${n2yoApiKey}`);
 
       // Check if the response contains TLE data
       if (response.data && response.data.tle) {
