@@ -22,7 +22,10 @@ FROM nginx:stable-alpine
 # Copy the bundled files from the build stage to the Nginx html directory
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
-# Expose the port the app will run on
-EXPOSE 80
+# Copy the nginx configuration file
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose the ports the app will run on
+EXPOSE 80 4002
 
 # Nginx will start automatically, no need for a CMD directive
