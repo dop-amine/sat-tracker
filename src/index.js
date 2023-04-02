@@ -52,67 +52,58 @@ function updateSatellitePositions() {
 
 async function updateTLEData() {
   try {
-    const noradIDs = [25544, 36516, 33591, 29155, 25338];
-
-    // const noradIDs = [
-    //   25544, // International Space Station
-    //   25338, // Globalstar M045
-    //   36516, // GPS IIF-1
-    //   37763, // GPS IIF-2
-    //   38833, // GPS IIF-3
-    //   40105, // GPS IIF-5
-    //   40534, // GPS IIF-6
-    //   40730, // GPS IIF-7
-    //   41019, // GPS IIF-8
-    //   41328, // GPS IIF-9
-    //   41553, // GPS IIF-10
-    //   41859, // GPS IIF-11
-    //   43001, // GPS IIF-12
-    //   22700, // NOAA 15
-    //   23581, // NOAA 16
-    //   25338, // NOAA 18
-    //   28654, // NOAA 19
-    //   27424, // GOES 13
-    //   32382, // GOES 14
-    //   36411, // GOES 15
-    //   32952, // Meteosat-9
-    //   36393, // Meteosat-10
-    //   37949, // Meteosat-11
-    //   40732, // Meteosat-8
-    //   27453, // Terra
-    //   28380, // Aqua
-    //   35491, // Landsat 5
-    //   39084, // Landsat 8
-    //   20625, // ERS-1
-    //   22823, // ERS-2
-    //   23560, // RADARSAT-1
-    //   27602, // ENVISAT
-    //   33442, // ALOS
-    //   36105, // RADARSAT-2
-    //   36605, // SARAL
-    //   38093, // Sentinel-1A
-    //   40376, // Sentinel-1B
-    //   41027, // Sentinel-2A
-    //   42063, // Sentinel-2B
-    //   36605, // SARAL
-    //   41335, // Sentinel-3A
-    //   43189, // Sentinel-3B
-    //   27424, // GOES 13
-    //   32382, // GOES 14
-    //   36411, // GOES 15
-    //   41622, // SES-9
-    //   38867, // SES-8
-    //   25413, // ABS-3
-    //   33053, // ABS-2
-    //   36499, // ABS-2A
-    //   41026, // SES-15
-    //   42086, // SES-14
-    //   40880, // Intelsat 29e
-    //   40425, // Intelsat 34
-    //   41747, // Intelsat 35e
-    //   41866, // Intelsat 37e
-    //   40557, // NBN Co 1A
-    // ]
+    const noradIDs = [
+      25544, // International Space Station
+      25338, // Globalstar M045
+      36516, // GPS IIF-1
+      37763, // GPS IIF-2
+      38833, // GPS IIF-3
+      40105, // GPS IIF-5
+      40534, // GPS IIF-6
+      40730, // GPS IIF-7
+      41019, // GPS IIF-8
+      41328, // GPS IIF-9
+      41859, // GPS IIF-11
+      43001, // GPS IIF-12
+      22700, // NOAA 15
+      23581, // NOAA 16
+      25338, // NOAA 18
+      28654, // NOAA 19
+      27424, // GOES 13
+      32382, // GOES 14
+      36411, // GOES 15
+      32952, // Meteosat-9
+      40732, // Meteosat-8
+      27453, // Terra
+      28380, // Aqua
+      35491, // Landsat 5
+      39084, // Landsat 8
+      20625, // ERS-1
+      22823, // ERS-2
+      23560, // RADARSAT-1
+      27602, // ENVISAT
+      36105, // RADARSAT-2
+      36605, // SARAL
+      38093, // Sentinel-1A
+      40376, // Sentinel-1B
+      42063, // Sentinel-2B
+      36605, // SARAL
+      41335, // Sentinel-3A
+      43189, // Sentinel-3B
+      27424, // GOES 13
+      32382, // GOES 14
+      36411, // GOES 15
+      41622, // SES-9
+      38867, // SES-8
+      25413, // ABS-3
+      33053, // ABS-2
+      36499, // ABS-2A
+      41026, // SES-15
+      40880, // Intelsat 29e
+      40425, // Intelsat 34
+      41747, // Intelsat 35e
+      41866, // Intelsat 37e
+    ]
 
     for (const noradID of noradIDs) {
       const response = await axios.get(`${apiBaseUrl}/api/tle/${noradID}?apiKey=${n2yoApiKey}`);
