@@ -6,7 +6,6 @@ package-lock.json
 .env
 
 # Compiled output (if any)
-/dist/
 /build/
 /out/
 /lib/
