@@ -1,57 +1,73 @@
 import * as Cesium from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
-import "../src/css/main.css"
-const satellite = require('satellite.js');
+import "../src/css/main.css";
+const axios = require("axios");
+const satellite = require("satellite.js");
 
-// const tleLine1 = '1 25544U 98067A   21305.82561019  .00001334  00000+0  61267-4 0  9998';
-// const tleLine2 = '2 25544  51.6413 351.3817 0009373  30.8539  58.8257 15.50216137362383';
-
-// const satrec = satellite.twoline2satrec(tleLine1, tleLine2);
+// N2YO API endpoint for TLE data
+const n2yoBaseUrl = 'http://localhost:4002/api';
+const n2yoApiKey = "6MJ779-GQHBQ3-YV4T9H-50H2";
 
 // Cesium access token
-Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlYWE1OWUxNy1mMWZiLTQzYjYtYTQ0OS1kMWFjYmFkNjc5YzciLCJpZCI6NTc3MzMsImlhdCI6MTYyNzg0NTE4Mn0.XcKpgANiY19MC4bdFUXMVEBToBmqS8kuYpUlxJHYZxk';
+Cesium.Ion.defaultAccessToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlYWE1OWUxNy1mMWZiLTQzYjYtYTQ0OS1kMWFjYmFkNjc5YzciLCJpZCI6NTc3MzMsImlhdCI6MTYyNzg0NTE4Mn0.XcKpgANiY19MC4bdFUXMVEBToBmqS8kuYpUlxJHYZxk";
 
 // Initialize the Cesium Viewer in the HTML element
-const viewer = new Cesium.Viewer('cesiumContainer');
+const viewer = new Cesium.Viewer("cesiumContainer");
 
 // Add Cesium OSM Buildings
 viewer.scene.primitives.add(Cesium.createOsmBuildings());
 
+// Update the position of all satellites immediately when the app starts up
+updateSatellitePositions();
 
-// Define the TLE values of the satellite
-const satTLE = {
-  name: 'ISS (ZARYA)',
-  line1: '1 25544U 98067A   21091.62677821  .00002762  00000-0  65933-4 0  9995',
-  line2: '2 25544  51.6445 103.3366 0004704  45.7084  32.0459 15.48907119278754'
-};
+// Update the position of all satellites every hour (N2YO limit of 1000 requests per hour)
+setInterval(updateSatellitePositions, 60 * 60 * 1000);
 
-// Create a satellite object using the TLE values
-const satrec = satellite.twoline2satrec(satTLE.line1, satTLE.line2);
+// Update the position of all satellites
+async function updateSatellitePositions() {
+  try {
+    const noradIDs = [25544, 36516, 33591, 29155, 25338];
 
-// Create a Cesium Entity object to represent the satellite
-const satelliteEntity = viewer.entities.add({
-  name: satTLE.name,
-  position: Cesium.Cartesian3.fromDegrees(0, 0, 0),
-  billboard: {
-    image: 'assets/satellite.png',
-    scale: 0.05,
-  },
-});
+    // Fetch TLE data for each satellite from N2YO API
+    for (const noradID of noradIDs) {
+      const response = await axios.get(`${n2yoBaseUrl}/tle/${noradID}?apiKey=${n2yoApiKey}`);
+      console.log(response.data);
 
-// Update the position of the entity every second
-setInterval(updateSatellitePosition, 1000);
+      // Check if the response contains TLE data
+      if (response.data && response.data.tle) {
+        const tleLines = response.data.tle.split("\n");
+        const line1 = tleLines[0];
+        const line2 = tleLines[1];
+        const satrec = satellite.twoline2satrec(line1, line2);
 
-// Update the position of the entity
-function updateSatellitePosition() {
-  const now = new Date();
-  const positionAndVelocity = satellite.propagate(satrec, now);
-  const positionEci = positionAndVelocity.position;
-  const gmst = satellite.gstime(now);
-  const positionGd = satellite.eciToGeodetic(positionEci, gmst);
-  const longitude = satellite.degreesLong(positionGd.longitude);
-  const latitude = satellite.degreesLat(positionGd.latitude);
-  const altitude = positionGd.height;
+        const positionAndVelocity = satellite.propagate(satrec, new Date());
+        const positionEci = positionAndVelocity.position;
+        const gmst = satellite.gstime(new Date());
+        const positionGd = satellite.eciToGeodetic(positionEci, gmst);
+        const longitude = satellite.degreesLong(positionGd.longitude);
+        const latitude = satellite.degreesLat(positionGd.latitude);
+        const altitude = positionGd.height;
 
-  // Set the position of the entity
-  satelliteEntity.position = Cesium.Cartesian3.fromDegrees(longitude, latitude, altitude);
+        const satelliteEntity = viewer.entities.add({
+          name: response.data.info.satname,
+          position: Cesium.Cartesian3.fromDegrees(longitude, latitude, altitude),
+          billboard: {
+            image: "assets/satellite.png",
+            scale: 0.05,
+          },
+        });
+
+        satelliteEntity.position = Cesium.Cartesian3.fromDegrees(
+          longitude,
+          latitude,
+          altitude
+        );
+      } else {
+        console.error("Invalid TLE data format for NORAD ID", noradID, ":", response.data);
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
 }

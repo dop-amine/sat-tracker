@@ -6,6 +6,14 @@ services:
     container_name: sat-tracker
     ports:
       - "8080:80"
+    depends_on:
+      - proxy
     volumes:
       - .:/app
       - /app/node_modules
+
+  proxy:
+    build: ./proxy
+    container_name: sat-tracker-proxy
+    ports:
+      - "4002:4002"
