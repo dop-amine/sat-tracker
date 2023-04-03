@@ -1,5 +1,9 @@
  Satellite Tracker that uses the [`Cesium`](https://cesium.com/) & [`satellite.js`](https://github.com/shashwatak/satellite-js) libraries with the [`N2YO API`](https://www.n2yo.com/) to show a live feed of satellites.
 
+ The app makes one request for each satellite every hour to the N2YO API to get the [TLE](https://en.wikipedia.org/wiki/Two-line_element_set) data. It then uses the latest TLE data to derive the current location of each satellite and update the location of the entities in the Cesium viewer every second.
+
+ The request to the N2YO API needs to be made through a proxy server, to fix a CORS error. This proxy server runs in a separate container.
+
 [![Screenshot](https://i.imgur.com/RUZaLok.png)](https://i.imgur.com/RUZaLok.png)
 
 ### Setup
