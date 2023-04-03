@@ -1,4 +1,6 @@
-Satellite Tracker using Cesium & N2YO API.
+ Satellite Tracker that uses the [`Cesium`](https://cesium.com/) & [`satellite.js`](https://github.com/shashwatak/satellite-js) libraries with the [`N2YO API`](https://www.n2yo.com/) to show a live feed of satellites.
+
+[![Screenshot](https://i.imgur.com/RUZaLok.png)](https://i.imgur.com/RUZaLok.png)
 
 ### Setup
 
