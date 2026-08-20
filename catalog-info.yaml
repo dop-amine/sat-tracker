@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: sat-tracker
+  title: Satellite Tracker
+  description: >-
+    A live satellite map built on Cesium and satellite.js, pulling TLE orbital
+    elements hourly from the N2YO API through a small CORS proxy and
+    propagating each satellite's position every second. An experiment, not a
+    service anything depends on.
+  annotations:
+    github.com/project-slug: dop-amine/sat-tracker
+    dop-amine.com/tier: '3'
+spec:
+  type: site
+  lifecycle: experimental
+  owner: dop-amine
